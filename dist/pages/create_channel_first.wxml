@@ -1,0 +1,11 @@
+
+	    <view class="containers">
+ <view class="item">
+        <view class="button" bindtap="createChannelNofee">
+        </view>
+          <view class="button2" bindtap="createChannelfee">
+        </view>
+      </view>
+       		 <navigator class="item problem" url="/pages/problems">
+			 <view class="title">常见问题</view></navigator>
+  		</view>

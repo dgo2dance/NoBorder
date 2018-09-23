@@ -1,0 +1,5 @@
+
+	    <view class="info_block">
+<view class="problem">主要问题</view>
+  		</view>
+  		 <navigator class="item" url="/pages/problems"/>

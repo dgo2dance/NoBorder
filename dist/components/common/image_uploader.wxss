@@ -1,0 +1,20 @@
+@import "./slider_panel.wxss";
+.photo-box { height: 150px; background-color: #FAFAFA; border-bottom: 1px solid #EDEDED; }
+
+.photo-box .photo-btn { height: 75px; width: 75px; }
+
+.swiper-box .photo-btn { position: absolute; right: 30rpx; top: 455rpx; background-color: white; border-radius: 28px; z-index: 100; }
+
+.swiper-box .picture-swiper { height: 580rpx; }
+
+.swiper-box .picture-swiper image { height: 100%; width: 100%; }
+
+.icon-lg { height: 30px; width: 30px; vertical-align: middle; }
+
+image { width: 400rpx; height: 400rpx; display: inline-block; overflow: hidden; }
+
+.manage-box { padding-top: 10rpx; }
+
+.manage-box .item-box { padding: 10rpx 20rpx; background-color: white; margin-bottom: 5rpx; margin-top: 5rpx; border-top: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED; }
+
+.manage-box .item-box .item-footer-box image { margin-left: 20rpx; }

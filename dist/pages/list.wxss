@@ -1,0 +1,7 @@
+@import "./../components/single_item.wxss";
+@import "./../components/tab.wxss";
+@import "./../components/bomb_screen.wxss";
+@import "./../components/common/placeholder.wxss";
+@import "./../components/common/bottomLoadMore.wxss";
+@import "./../components/discover.wxss";
+.container{padding:10rpx 0;background:#0099cc;height:298rpx}.container .item_left{margin-left:10rpx;padding-top:5rpx;overflow:hidden;height:300rpx}.container image{height:300rpx}

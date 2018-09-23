@@ -1,0 +1,89 @@
+
+  <view class="container">
+    <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
+      <block  wx:for="{{adList}}" wx:key="key">
+        <swiper-item>
+          <image src="{{item.imgPath}}" class="slide-image" bindtap="goToAdvert" data-wpygotoadvert-a="{{item.url}}"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <!--
+    <view class="pos">
+      <view class="search_read_only">
+        <navigator class="search_content" open-type="navigate" url="/pages/search">
+          <i class="iconfont icon-search"></i>
+          <view class="search_input">搜索频道</view>
+        </navigator>
+        <navigator class="message" url="/pages/messages">
+          <i class="iconfont icon-message cfff"></i>
+          <view class="doc cfff">消息</view>
+        </navigator>
+      </view>
+    </view>
+    -->
+    
+  </view>
+
+  <view  wx:if="{{showModel}}" class="model">
+    <view class="modelTitle">
+      获取微信授权信息
+    </view>
+    <view class="modelBody">微信登录需要获取您的用户信息，请登录</view>
+    <view class="btns">
+      <button open-type="getUserInfo" class="agree" bindgetuserinfo="agreeGetUser" lang="zh_CN">登录/注册</button>
+    </view>
+  </view>
+  <view  wx:if="{{showModel}}" class="mask"/>
+  <!-- 自定义弹框结束 -->
+
+    <!--tab模块-->
+  <view class="swiper-tab-pd">
+    
+  <!--index.wxml-->
+  <view class="swiper-tab">
+    <view  wx:for="{{$tab$tabList}}" wx:key="index" class="swiper-tab-list {{$tab$currentTab==index ? 'active' : ''}}" data-current="{{index}}" bindtap="$tab$swichNav">
+      {{item.name? item.name:item}}
+      <view class=" {{item.dotNum>=100?'dotbig':'dot'}}" wx:if="{{item.dotNum>0}}">{{item.dotNum}}</view>
+    </view>
+  </view>
+
+  </view>
+  <scroll-view scroll-y="true" class="swiper-item-box" style="height:{{winHeight - 31}}px" bindscrolltolower="onReachBottom">
+    
+<view class="order_item">
+<block wx:for="{{$orderItem$orderList}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$key">
+  <view class="list"  wx:key="index">
+    <navigator class="flex item" url="/pages/org_detail?code={{$orderItem$item.id}}">
+
+
+            <view class="item_left">
+                <image src="{{$orderItem$item.imgPath}}"/>
+            </view>
+            <view class="flex_auto item_middle">
+                <view><text class="title">{{$orderItem$item.name}}</text></view>
+            </view>
+        <view class="navigator-arrow"/>
+     
+
+  </navigator>
+
+
+  </view>
+</block>
+</view>
+
+    <!--加载更多时动画-->
+    
+    <view class="loadMoreGif"  wx:if="{{$bottomLoadMore$show}}">
+        <image src="../images/loadding.gif"/>
+        <text>{{$bottomLoadMore$message}}</text>
+    </view>
+
+    <!--暂无数据显示-->
+    
+    <view class="empty-placeholder row-center"  wx:if="{{$placeholder$show}}">
+        <image class="icon-xl" src="../images/empty.png"/>
+        <view class="txt">{{$placeholder$message}}</view>
+    </view>
+
+  </scroll-view>

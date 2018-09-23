@@ -1,0 +1,63 @@
+
+       <view class="container">
+
+          <view class="item_left">
+                <image src="{{item.imgPath}}"/>
+            </view>
+            <view class="flex_auto item_middle">
+                <view><text class="title">{{item.name}}</text></view>
+            </view>
+
+
+        </view>
+
+    <view class="swiper-tab-pd">
+    
+  <!--index.wxml-->
+  <view class="swiper-tab">
+    <view  wx:for="{{$tab$tabList}}" wx:key="index" class="swiper-tab-list {{$tab$currentTab==index ? 'active' : ''}}" data-current="{{index}}" bindtap="$tab$swichNav">
+      {{item.name? item.name:item}}
+      <view class=" {{item.dotNum>=100?'dotbig':'dot'}}" wx:if="{{item.dotNum>0}}">{{item.dotNum}}</view>
+    </view>
+  </view>
+
+  </view>
+  <scroll-view scroll-y="true" class="swiper-item-box" style="height:{{winHeight - 31}}px" bindscrolltolower="onReachBottom">
+   
+<view class="order_item">
+<block wx:for="{{$singleItem$singleList}}" wx:for-index="$singleItem$index" wx:for-item="$singleItem$item" wx:key="$singleItem$key">
+  <view class="list"  wx:key="index">
+    <navigator class="flex item" url="/pages/list?orderNo={{$singleItem$item.orderNo}}">
+
+
+            <view class="item_left">
+                <image src="{{$singleItem$item.imgPath}}"/>
+            </view>
+            <view class="flex_auto item_middle">
+                <view><text class="title">{{$singleItem$item.name}}</text></view>
+            </view>
+        <view class="navigator-arrow"/>
+     
+
+  </navigator>
+
+
+  </view>
+</block>
+</view>
+ 
+    <!--加载更多时动画-->
+    
+    <view class="loadMoreGif"  wx:if="{{$bottomLoadMore$show}}">
+        <image src="../images/loadding.gif"/>
+        <text>{{$bottomLoadMore$message}}</text>
+    </view>
+
+    <!--暂无数据显示-->
+    
+    <view class="empty-placeholder row-center"  wx:if="{{$placeholder$show}}">
+        <image class="icon-xl" src="../images/empty.png"/>
+        <view class="txt">{{$placeholder$message}}</view>
+    </view>
+
+  </scroll-view>

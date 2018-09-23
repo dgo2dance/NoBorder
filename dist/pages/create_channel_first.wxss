@@ -1,0 +1,7 @@
+@import "./../components/order_item.wxss";
+@import "./../components/tab.wxss";
+@import "./../components/bomb_screen.wxss";
+@import "./../components/common/placeholder.wxss";
+@import "./../components/common/bottomLoadMore.wxss";
+@import "./../components/discover.wxss";
+.containers{position:fixed;height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:#ffffff}.containers .item{display:flex;height:100%;width:100%;align-items:center}.containers .button:after,.containers .button2:after{content:"免费";color:#888888;font-size:38rpx;width:100%;height:100%;line-height:200rpx;text-align:center;position:absolute;top:0;display:block}.containers .button2:after{content:"付费";word-spacing:38rpx;color:#888888}.containers .button,.containers .button2{float:left;margin:50px auto;cursor:pointer;height:200rpx;width:200rpx;display:flex;position:relative;color:#eeeeee;text-align:center;line-height:200rpx;border-radius:100rpx;transition:all .5s ease-in;border:1px solid #888888}.containers .button{float:left}.containers .button2{float:right}.containers .problem{display:flex;justify-content:center;height:120rpx}.containers .title{flex-direction:column-reverse;font-size:38rpx}

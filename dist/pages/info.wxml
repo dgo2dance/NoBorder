@@ -1,0 +1,44 @@
+
+  <view class="info">
+    <view class="header">
+      <view class="header_content">
+        <image class="avatarUrl" src="{{avatarUrl}}"/>
+        <view class="nickName cfff">{{nickName}}</view>
+      </view>
+    </view>
+    <view class="info_block">
+      <navigator class="item" url="/pages/register"  wx:if="{{bShowBind}}">
+        <view>
+          <view class="item_content">
+            <image class="item_img" src="../images/icon_my_01.png"/>
+            <view class="text" style="color:#fe2a2a">绑定手机号</view>
+          </view>
+          <view class="tip">绑定手机号可更好的让我们服务好您！</view>
+        </view>
+        <view class="arrow">></view>
+      </navigator>
+
+        <navigator class="item" url="/pages/order">
+        <view class="item_content">
+          <image class="item_img" src="../images/icon_my_02.png"/>
+          <view class="text">编辑资料</view>
+        </view>
+        <view class="arrow">></view>
+      </navigator>
+
+      <navigator class="item" url="/pages/order">
+        <view class="item_content">
+          <image class="item_img" src="../images/icon_my_02.png"/>
+          <view class="text">活跃频道排行榜</view>
+        </view>
+        <view class="arrow">></view>
+      </navigator>
+      <navigator class="item" url="/pages/reorder">
+        <view class="item_content">
+          <image class="item_img" src="../images/icon_my_02.png"/>
+          <view class="text">帮助与反馈</view>
+        </view>
+        <view class="arrow">></view>
+      </navigator>
+    </view>
+  </view>

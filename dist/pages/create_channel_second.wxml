@@ -1,0 +1,105 @@
+
+
+    <view class="containers">
+    	<!--
+	    <view class="img" bindtab="changeimg">
+	   <image src="http://os11g3fl4.bkt.clouddn.com/WechatIMG12.jpeg"> </image>
+	   	</view>
+-->
+   <!--照片上传区域-->
+     <form bindsubmit="formSubmit" class="form">
+
+      
+  <!-- 照片区域 -->
+  <view class="photo-box column-center" bindtap="$ImageUploader$photo"  wx:if="{{$ImageUploader$pictures.length < 1}}">
+    <image class="photo-btn " src="/images/icons/camera.png"/>
+    <text class="mt10">{{$ImageUploader$title}}</text>
+  </view>
+
+  <!-- 照片轮播区域-->
+  <view class="swiper-box"  wx:if="{{$ImageUploader$pictures.length > 0}}" bindtap="$ImageUploader$manage">
+    <swiper class="{{$ImageUploader$otherClass}}" indicator-active-color="#EEE">
+      <swiper-item wx:for="{{$ImageUploader$pictures}}" wx:key="index" wx:index="index">
+        <image mode="aspectFill" src="{{item.url}}"/>
+      </swiper-item>
+    </swiper>
+    <image class="photo-btn icon-xl" style="top: {{$ImageUploader$top}}rpx;" src="/images/icons/camera.png"/>
+  </view>
+
+  <!--上传管理器-->
+  
+  <!--遮罩层-->
+  <view class="slider-panel-cover"  wx:if="{{$ImageUploader$SliderPanel$display == 'true'}}" bindtap="$ImageUploader$SliderPanel$close"/>
+
+  <!--滑动面板-->
+  <view class="slider-panel-box {{$ImageUploader$SliderPanel$display == 'true' ? 'slider-panel-show' : '' }} " style="min-height: {{$ImageUploader$SliderPanel$minHeight}}">
+    <!--面板标题-->
+    <view class="header-box">
+      <!--标题槽位-->
+      <view class="title-box">
+        <view>编辑图片</view>
+      </view>
+
+      <!--关闭按钮-->
+      <view class="close-box">
+        <image class="icon" bindtap="$ImageUploader$SliderPanel$close" src="/images/icons/close.png"/>
+      </view>
+    </view>
+
+    <!--内容槽位-->
+    <scroll-view scroll-y="true" class="content-box" style="background-color:{{$ImageUploader$SliderPanel$backgroundColor}};">
+      <view class="manage-box column">
+      <image class="photo-btn icon-xl" style="top: {{$ImageUploader$top}}rpx;" catchtap="$ImageUploader$photo" src="/images/icons/camera.png"/>
+
+      <view class="item-box row-between"  wx:for="{{$ImageUploader$pictures}}" wx:key="index" wx:index="index">
+
+        <!--展现区域-->
+        <view class="item-header-box">
+
+          <text class="lg mr20">{{index + 1}}</text>
+          <image class="icon-xl" src="{{item.url}}"/>
+        <!--  <text class="ml20" wx:if="{{index == 0}}">(封面)</text>
+          <text class="muted ml20" wx:else>(细节)</text>. -->
+        </view>
+
+        <!-- 操作区域 -->
+        <view class="item-footer-box">
+          <image class="icon-lg" wx:if="{{index != 0}}" src="/images/icons/up-arrow.png" bindtap="$ImageUploader$up" data-wpyup-a="{{index}}"/>
+          <image class="icon-lg" wx:if="{{index != $ImageUploader$pictures.length - 1}}" src="/images/icons/down-arrow.png" bindtap="$ImageUploader$down" data-wpydown-a="{{index}}"/>
+        <!--  <image class="icon-lg" src="/images/icons/minus.png" bindtap="remove({{index}})"></image> -->
+        </view>
+      </view>
+      <!-- <text class="muted sm mt10 ml20">提示：请点击按钮改变图片顺序，第一张图片为封面</text> -->
+    </view>
+    </scroll-view>
+
+    <!-- 按钮区域 -->
+    <view class="btn-box row-center"  wx:if="{{$ImageUploader$SliderPanel$btn == 'true'}}">
+      <view class="btn-back column-center" bindtap="$ImageUploader$SliderPanel$close"><text>取消</text></view>
+      <view class="btn-primary column-center ml20"><text>确定</text></view>
+    </view>
+  </view>
+
+
+
+
+	   	  <view class="weui-cell weui-cell_input">
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" name="name" placeholder="请输入频道名称" style="height:4em;text-align:center;" auto-focus/>
+                    </view>
+          </view>
+
+
+     <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell">
+                    <view class="weui-cell__bd">
+                        <textarea class="weui-textarea" name="intro" placeholder="请输入频道介绍"/>
+                    </view>
+                </view>
+            </view>
+
+   <view class="btn_box">
+      <button class="button type_red" formType="submit">提交</button>
+    </view>
+  </form>
+  		</view>

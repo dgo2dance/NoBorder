@@ -1,0 +1,597 @@
+<template>
+<template>
+  <view class="container">
+    <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
+      <block wx:for="{{adList}}" wx:key="key">
+        <swiper-item>
+          <image src="{{item.imgPath}}" class="slide-image" @tap="goToAdvert({{item.url}})" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <!--
+    <view class="pos">
+      <view class="search_read_only">
+        <navigator class="search_content" open-type="navigate" url="/pages/search">
+          <i class="iconfont icon-search"></i>
+          <view class="search_input">搜索频道</view>
+        </navigator>
+        <navigator class="message" url="/pages/messages">
+          <i class="iconfont icon-message cfff"></i>
+          <view class="doc cfff">消息</view>
+        </navigator>
+      </view>
+    </view>
+    -->
+    
+  </view>
+
+  <view wx:if="{{showModel}}" class="model">
+    <view class="modelTitle">
+      获取微信授权信息
+      获取微信授权信息
+    </view>
+    <view class="modelBody">微信登录需要获取您的用户信息，请登录</view>
+    <view class="btns">
+      <button open-type="getUserInfo" class="agree" bindgetuserinfo="agreeGetUser" lang="zh_CN">登录/注册</button>
+    </view>
+  </view>
+  <view wx:if="{{showModel}}" class="mask"></view>
+  <!-- 自定义弹框结束 -->
+
+    <!--tab模块-->
+  <view class="swiper-tab-pd">
+    <tab @currentTab.user="getCurrentTab" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+  </view>
+  <scroll-view scroll-y="true" class="swiper-item-box" style="height:{{winHeight - 31}}px" bindscrolltolower="onReachBottom">
+    <orderItem :orderList.sync="orderList"></orderItem>
+    <!--加载更多时动画-->
+    <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+    <!--暂无数据显示-->
+    <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
+  </scroll-view>
+
+</template>
+<script>
+import wepy from 'wepy';
+import api from '../api/api';
+import tip from '../utils/tip'
+import Tab from '../components/tab'
+import Discover from '../components/discover'
+import Bombscreen from '../components/bomb_screen'
+import OrderItem from '../components/order_item'
+import BottomLoadMore from "../components/common/bottomLoadMore"
+import Placeholder from "../components/common/placeholder"
+import 'wepy-async-function'
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO,
+  USER_INFO,
+  USER_CODE
+} from '../utils/constant';
+
+export default class Home extends wepy.page {
+  config = {
+    navigationBarTitleText: '独鹿交友',
+  }
+  components = {
+    discover: Discover,
+    bottomLoadMore: BottomLoadMore,
+    placeholder: Placeholder,
+    bombscreen: Bombscreen,
+    tab: Tab,
+    orderItem: OrderItem,
+  }
+  data = {
+
+    imgUrls: [
+      '../images/image_demo.png',
+    ],
+    indicatorDots: true,
+    autoplay: true,
+    interval: 3000,
+    duration: 1000,
+    indicatorActiveColor: "#fff",
+    discoverList: [],
+    //是否有数据
+    is_empty: false,
+    //当前页面
+    currentPage: 1,
+    //总页数
+    page_total: 0,
+    //是否显示 底部loading
+    showLoading: true,
+    //防止重复加载
+    preventRepeatReuqest: false,
+    //广告列表
+    adList: [],
+    tps: 0,
+    is_show_alert: true,
+    winHeight: 0,
+    totalCount: 0,
+    tabList: ["全部清单", "我加入的","我创建的"],
+    orderList: [],
+    currentPage: 1,
+    is_empty: false,
+    orderStatus: "",
+    currentTab: 0,
+    flag: 0,
+    
+    //待付款
+    pendingPayCount : 0,
+    //待发货
+    backrdersCount : 0,
+    //待收货
+    shippedCount : 0,
+    receiveFlg : 0,
+    showModel:false
+
+  }
+
+  globalData = {
+    userInfo: null,
+    appid: 'wx225f75e64eddaddd',
+    secret: '8054a0cc597e0c630a2025724b4e9c11',
+  }
+
+  async getMyOrder(currentPage, size,refresh) {
+    console.log("refresh值："+refresh);
+    let that = this;
+    console.log("orderStatus值");
+    console.log("orderStatus值" + that.orderStatus);
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openId = userSpecialInfo.openid;
+    const json = await api.getOrg({
+      query: {
+        openId: openId,
+        page: currentPage || 1,
+        size: size || 10,
+
+      }
+    });
+    console.log("myorder:"+JSON.stringify(json));
+
+    if (json.data.code == 0) {
+    console.log("myorder:refresh"+refresh);
+
+    console.log("myorder:records"+JSON.stringify(json.data.data.records));
+
+      if (refresh) {
+      console.log("myorder:records-001"+json.data.data.records);
+
+        that.orderList = json.data.data.records;
+      } else {
+        that.orderList = [...that.orderList, ...json.data.data.records];
+      }
+      that.page_total = json.data.data.totalPages;
+      that.totalCount = json.data.data.totalCount;
+      console.log("条目数：" + that.totalCount);
+      if (json.data.page_total == 0) {
+        //暂无数据
+        that.is_empty = true;
+      } else {
+        that.is_empty = false;
+      }
+  //    that.getMyOrderSize();
+      console.log("list返回数据");
+      console.log(that.orderList);
+    } else {
+      tip.error(json.data.msg)
+    }
+    that.showLoading = false;
+    that.$apply();
+  }
+
+
+  async getMyOrderSize() {
+    console.log("订单数量统计");
+    let that = this;
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openId = userSpecialInfo.openid;
+    const json = await api.getMyOrderSize({
+      query: {
+        openId: openId
+      }
+    });
+    if (json.data.code == 0) {
+      //待付款
+      that.pendingPayCount = json.data.pendingPayCount;
+      //待发货
+      that.backrdersCount = json.data.backrdersCount;
+      //待收货
+      that.shippedCount = json.data.shippedCount;
+
+      //重写list
+      var dotList = ["全部订单", { name: "待支付", dotNum: that.pendingPayCount }, { name: "待收货", dotNum: that.backrdersCount }, "已完成"];
+      this.$invoke("tab", "changeList", dotList);
+      that.$apply();
+    }
+  }
+
+  
+  async getAdList() {
+    const json = await api.getAdList({
+      query: {}
+    });
+
+    console.log("getAdList："+JSON.stringify(json));
+
+    if (json.data.code == 0) {
+      this.adList = json.data.data;
+      this.$apply();
+    } else {}
+  }
+
+  // 登录服务器；
+  async login() {
+    let that = this;
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let userInfo = wepy.getStorageSync(USER_INFO) || {};
+    let openId = userSpecialInfo.openid;
+     const json = await api.login({
+      query: {
+        openid:openId,
+        nickname:userInfo.nickName,
+        gender:parseInt(userInfo.gender),
+        avatarUrl:userInfo.avatarUrl,
+        city:userInfo.city,
+        provience:userInfo.province
+      },
+      method:"POST"
+    });
+     console.log("login"+JSON.stringify(json));
+
+        if(json.data.code == 0){
+          console.log("登录成功");
+
+        }
+
+
+  }
+
+     //登录 获取openid, 并登录服务器
+   getLogin() {
+        let userCode = wepy.getStorageSync(USER_CODE) || {};
+        let code = userCode.code;
+        let c = wepy.getStorageSync(USER_INFO) || {};
+        if(code){
+          let d = this.globalData; //这里存储了appid、secret、token串    
+          let url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + d.appid + '&secret=' + d.secret + '&js_code=' + code + '&grant_type=authorization_code';
+
+           wx.request({  
+              url: url,  
+              header: {  
+                  'content-type': 'application/json'  
+              },  
+              success: function(res) {  
+                let obj = {};
+                obj.openid = res.data.openid;
+                obj.expires_in = Date.now() + res.data.expires_in;
+               //存储openid 
+                wepy.setStorageSync(USER_SPECICAL_INFO, obj);
+              }  
+            });
+
+         }
+
+         this.login();
+         wx.hideLoading();
+
+   }
+
+   // 登录时加载项
+  onLoad() {
+    let that = this;
+    this.discoverList = [];
+   //  that.getDiscoverList();
+    this.getAdList();
+
+   //  登录获取用户信息
+    wx.login({
+      success: res => {
+        
+         wepy.setStorageSync(USER_CODE, res);
+        //wx.getuserinfo接口不再支持
+        wx.getSetting({
+          success: (res) => {
+            //判断用户没有授权。需要弹框
+            if(!res.authSetting['scope.userInfo']){
+              that.setData({
+                showModel: true
+              })
+            }else{//没有授权需要弹框
+              that.setData({
+                showModel: false
+              })
+              wx.showLoading({
+                title: '加载中...'
+              })
+              that.getLogin();
+            }
+          },
+          fail: function () {
+            wx.showToast({
+              title: '系统提示:网络错误',
+              icon: 'warn',
+              duration: 1500,
+            })
+          }
+        })
+      },
+      fail:function () {
+        wx.showToast({
+          title:'系统提示:网络错误',
+          icon: 'warn',
+          duration: 1500,
+        })
+      }
+    });
+
+    console.log("test----");
+    this.getMyOrder();
+    //设置滚动高度
+    let systemInfo = wepy.getStorageSync(SYSTEM_INFO);
+    that.winHeight = systemInfo.windowHeight;
+    that.$apply();
+
+  }
+
+  computed = {}
+  methods = {
+    goToAdvert(url) {
+      console.log("url===" + url);
+      if (url.length == 0) {
+        return;
+      }
+      wepy.navigateTo({
+        url: url
+      })
+    },
+    onShareAppMessage: function(res) {
+      if (res.from === 'button') {
+        // 来自页面内转发按钮
+        console.log(res.target)
+      }
+      return {
+        title: '独鹿交友',
+        path: '/pages/home',
+        success: function(res) {
+          // 转发成功
+        },
+        fail: function(res) {
+          // 转发失败
+        }
+      }
+    },
+    alertCallback() {
+      tip.alert('跳转');
+    },
+    closeAlert() {
+      tip.alert('关闭');
+    },
+    getCurrentTab(cur, evt) {
+      this.currentPage = 1;
+      this.page_total = 0;
+      this.orderList = [];
+
+      let that = this;
+      that.currentTab = cur;
+      console.log("cur");
+      console.log(cur);
+      if (cur == 0) {
+        console.log("所有订单类型");
+        that.orderStatus = "";
+        that.getMyOrder();
+      } else if (cur == 1) {
+        console.log("未付款订单类型");
+        that.orderStatus = 0;
+        that.getMyOrder();
+      } else if (cur == 2) {
+        console.log("待收货订单类型");
+        that.orderStatus = 2;
+        that.receiveFlg=2;
+        that.getMyOrder();
+      } else if (cur == 3) {
+
+        console.log("已完成订单类型");
+        that.orderStatus = 4;
+        that.receiveFlg=4;
+        that.getMyOrder();
+      }
+      that.$apply();
+    },
+    /**
+     * 滑动切换tab
+     */
+    bindChange(e) {
+
+      let that = this;
+      that.currentTab = e.detail.current;
+      console.log("change tab...." + e.detailcurrent);
+      that.$apply();
+    },
+
+
+  //获取用户信息新接口
+  agreeGetUser:function (e) {
+    //设置用户信息本地存储
+    try {
+
+        wepy.setStorageSync(USER_INFO, e.detail.userInfo);
+        //存储系统信息 
+        let systemInfo = wepy.getSystemInfoSync();
+        wepy.setStorageSync(SYSTEM_INFO, systemInfo);
+
+      } catch (e) {
+        wx.showToast({
+          title: '系统提示:网络错误',
+          icon: 'warn',
+          duration: 1500,
+        })
+    }
+    wx.showLoading({
+      title:'加载中...'
+    })
+    let that = this;
+    that.setData({
+      showModel:false
+    });
+      that.getLogin();
+  },
+
+
+  //加载更多
+  onReachBottom() {
+    console.log("加载更多");
+    let that = this;
+    that.showLoading = true;
+    console.log(that.page_total + "232===" + that.currentPage);
+    //判断总页数是否大于翻页数
+    if ((that.page_total) > that.currentPage) {
+      //防止重复加载
+      if (that.preventRepeatReuqest) {
+        return true;
+      }
+      that.preventRepeatReuqest = true;
+      that.currentPage++;
+      console.log(this.currentTab);
+      if (this.currentTab == 0) {
+        console.log("所有订单类型");
+        that.getMyOrder(that.currentPage);
+      } else if (this.currentTab == 1) {
+        console.log("未付款订单类型");
+        that.orderStatus = 0;
+        that.getMyOrder(that.currentPage);
+      } else if (this.currentTab == 2) {
+        console.log("待发货订单类型");
+        that.orderStatus = 2;
+        that.receiveFlg=2;
+        that.getMyOrder(that.currentPage);
+      } else if (this.currentTab == 3) {
+        console.log("已完成订单类型");
+        that.orderStatus = 4;
+        that.getMyOrder(that.currentPage);
+      }
+      that.preventRepeatReuqest = false;
+    } else {
+      that.showLoading = false;
+    }
+  }
+
+  }
+  events = {
+
+     refreshOrderList(msg){
+      console.log("msg值:"+msg);
+      this.getMyOrder(1,10,1);
+    }
+  }
+
+
+}
+
+
+</script>
+<style lang="less">
+.swiper {
+  height: 348rpx;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.pos {
+  position: absolute;
+  top: 0rpx;
+  left: 0;
+  right: 0;
+  .search_content {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid #efefee;
+    .icon-search,
+    .search_input {
+      color: #efefee;
+    }
+  }
+  .message {
+    display: block;
+    text-align: center;
+    margin-left: 20rpx;
+  }
+  .doc {
+    font-size: 16rpx;
+    display: block;
+  }
+}
+
+
+.nav_list {
+  color: #404040;
+  display: flex;
+  font-size: 26rpx;
+  justify-content: space-between;
+  padding: 17rpx 50rpx;
+  navigator {
+    text-align: center
+  }
+  .nav_icon {
+    height: 80rpx;
+    margin: 0 auto;
+    width: 80rpx;
+    margin-bottom: 14rpx;
+  }
+  .nav_text {
+    font-size: 26rpx
+  }
+}
+
+.recommend-title {
+  padding: 40rpx 0;
+  text-align: center;
+  color: #333;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+}
+
+.model {
+  width: 650rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 1001;
+  background: #FAFAFA;
+  margin: -150px 50rpx 0 50rpx;
+  border-radius: 3px;
+}
+.modelTitle{
+  padding:15px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+}
+
+.modelBody {
+  height: 140px;
+  overflow-y: scroll; 
+}
+
+.agree{
+  padding: 10px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+  border-top: 1px solid #E8E8EA;
+  color: #3CC51F;
+}
+
+</style>
