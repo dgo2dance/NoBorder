@@ -13,12 +13,12 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.4",
 	"appid": "wx225f75e64eddaddd",
-	"projectname": "SingerDeer",
-	"svr": "",
-	"client": "",
-	"qcloudRoot": "",
-	"miniprogramRoot": "",
-	"pluginRoot": "",
+	"projectname": "%E6%97%A0%E7%95%8C",
+	"svr": "/",
+	"client": "/",
+	"qcloudRoot": "/",
+	"miniprogramRoot": "/",
+	"pluginRoot": "/",
 	"scripts": {},
 	"condition": {
 		"search": {

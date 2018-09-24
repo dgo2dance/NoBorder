@@ -31,7 +31,7 @@ import {
 
 export default class CreateList extends wepy.page {
   config = {
-    navigationBarTitleText: '独鹿交友',
+    navigationBarTitleText: '无界',
   }
   components = {
     discover: Discover,

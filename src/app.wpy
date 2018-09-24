@@ -22,49 +22,19 @@ import {
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/create',
       'pages/home',
       'pages/home_detail',
-      'pages/create_list',
-      'pages/create_channel_first',
-      'pages/create_channel_second',
       'pages/list',
       'pages/org_detail',
-
-
-
-      'pages/problems',
-      'pages/classify',
-      'pages/shop_cart',
       'pages/info',
-      'pages/search',
-      'pages/test',
-      'pages/sign_in',
-      'pages/exchange_goods',
-      'pages/wholesale',
-      'pages/replenishment_goods',
-      'pages/register',
-      'pages/order',
-      'pages/reorder',
-      'pages/pay_success',
-      'pages/points',
-      'pages/points_more',
-      'pages/points_rule',
-      'pages/collection',
-      'pages/messages',
-      'pages/setting',
-      'pages/goods_detail',
-      'pages/comfire_order',
-      'pages/address',
-      'pages/order_detail',
-      'pages/filter',
-      'pages/logistics',
-      'pages/comment',
-      'pages/comment_add'
+      'pages/create_confirm'
+
     ],
     window: {
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#F8F8F8',
-      navigationBarTitleText: '独鹿朋友',
+      navigationBarTitleText: '无界',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: false,
       backgroundColor: '#F8F8F8'
@@ -77,19 +47,19 @@ export default class extends wepy.app {
       "borderStyle": "black",
       "list": [{
         "pagePath": "pages/home",
-        "iconPath": "images/icon_social_slack.png",
-        "selectedIconPath": "images/icon_slack_hl.png",
-        "text": "清单"
+        "iconPath": "images/list.png",
+        "selectedIconPath": "images/list_select.png",
+        // "text": "列表"
       }, {
-        "pagePath": "pages/create_list",
-        "text": "创建",
+        "pagePath": "pages/create",
+      // "text": "创建",
         "iconPath": "images/add.png",
         "selectedIconPath": "images/add_select.png"
       }, {
         "pagePath": "pages/info",
          "iconPath": "images/icon_per.png",
          "selectedIconPath": "images/icon_per_hl.png",
-        "text": "我的"
+       // "text": "我"
       }]
     }
   }

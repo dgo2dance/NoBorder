@@ -1,12 +1,6 @@
 <template>
   <view class="container">
-    <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
-      <block wx:for="{{adList}}" wx:key="key">
-        <swiper-item>
-          <image src="{{item.imgPath}}" class="slide-image" @tap="goToAdvert({{item.url}})" />
-        </swiper-item>
-      </block>
-    </swiper>
+
     <!--
     <view class="pos">
       <view class="search_read_only">
@@ -69,7 +63,7 @@ import {
 
 export default class Home extends wepy.page {
   config = {
-    navigationBarTitleText: '独鹿朋友',
+    navigationBarTitleText: '无界',
   }
   components = {
     discover: Discover,

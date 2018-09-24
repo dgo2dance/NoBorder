@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -50,7 +50,5 @@ var Filter = function (_wepy$page) {
   return Filter;
 }(_wepy2.default.page);
 
-
-Page(require('./../npm/wepy/lib/wepy.js').default.$createPage(Filter , 'pages/filter'));
-
+exports.default = Filter;
 //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpbHRlci5qcyJdLCJuYW1lcyI6WyJGaWx0ZXIiLCJjb25maWciLCJuYXZpZ2F0aW9uQmFyVGl0bGVUZXh0IiwiZGF0YSIsImNvbXBvbmVudHMiLCJjb21wdXRlZCIsIm1ldGhvZHMiLCJTZWFyY2hGaWx0ZXIiLCJjb25zb2xlIiwibG9nIiwiZXZlbnRzIiwicGFnZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBQ0E7Ozs7Ozs7Ozs7OztJQUVxQkEsTTs7Ozs7Ozs7Ozs7Ozs7c0xBQ25CQyxNLEdBQVM7QUFDUEMsOEJBQXdCO0FBRGpCLEssUUFHVEMsSSxHQUFPLEUsUUFHUEMsVSxHQUFhLEUsUUFPYkMsUSxHQUFXLEUsUUFHWEMsTyxHQUFVO0FBQ05DLGtCQURNLDBCQUNRO0FBQ1pDLGdCQUFRQyxHQUFSLENBQVksUUFBWjtBQUNEO0FBSEssSyxRQU1WQyxNLEdBQVMsRTs7Ozs7NkJBWkEsQ0FFUjs7OztFQWJpQyxlQUFLQyxJOztrQkFBcEJYLE0iLCJmaWxlIjoiZmlsdGVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiXG5pbXBvcnQgd2VweSBmcm9tICd3ZXB5JztcblxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgRmlsdGVyIGV4dGVuZHMgd2VweS5wYWdlIHtcbiAgY29uZmlnID0ge1xuICAgIG5hdmlnYXRpb25CYXJUaXRsZVRleHQ6ICfnrZvpgIknLFxuICB9XG4gIGRhdGEgPSB7XG5cbiAgfVxuICBjb21wb25lbnRzID0ge1xuXG4gIH1cblxuICBvbkxvYWQoKSB7XG5cbiAgfVxuICBjb21wdXRlZCA9IHtcblxuICB9XG4gIG1ldGhvZHMgPSB7XG4gICAgICBTZWFyY2hGaWx0ZXIoKXtcbiAgICAgICAgY29uc29sZS5sb2coXCJeNjY2NjZcIilcbiAgICAgIH1cbiAgfVxuXG4gIGV2ZW50cyA9IHtcblxuICB9XG5cbn1cblxuIl19
