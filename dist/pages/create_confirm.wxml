@@ -19,9 +19,13 @@
     
 
       </view>
-        <view class="problem">
-        <navigator url="/pages/problems">
-       <view class="title">常见问题</view></navigator>
+        <view class="confirm">
+
+          <form bindsubmit="goConfirm">
+        <button form-type="submit" class="button type_gray">确认提交</button>
+      </form>
+
+
        </view>
 
   		</view>

@@ -22,6 +22,6 @@
 
 .containers .item { display: flex; height: 100%; width: 100%; align-items: center; /*垂直居中*/ }
 
-.containers .problem { display: flex; justify-content: center; bottom: 30rpx; width: 100%; align-self: flex-end; position: fixed; }
+.containers .confirm { display: flex; justify-content: center; bottom: 160rpx; width: 100%; align-self: flex-end; position: fixed; }
 
 .containers .title { font-size: 30rpx; }

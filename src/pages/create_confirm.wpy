@@ -20,9 +20,13 @@
     
 
       </view>
-        <view class="problem">
-        <navigator  url="/pages/problems">
-       <view class="title">常见问题</view></navigator>
+        <view class="confirm">
+
+          <form bindsubmit="goConfirm" >
+        <button form-type="submit" class="button type_gray">确认提交</button>
+      </form>
+
+
        </view>
 
   		</view>
@@ -333,10 +337,10 @@ export default class create_confirm extends wepy.page {
 
 
 
-    .problem{
+    .confirm{
       display:flex;
       justify-content:center;
-      bottom:30rpx;
+      bottom:160rpx;
       width:100%;
       align-self:flex-end;
       position: fixed;
