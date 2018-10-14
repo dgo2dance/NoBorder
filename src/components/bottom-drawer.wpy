@@ -1,0 +1,100 @@
+<style lang="scss">
+  @import "../styles/variables.scss";
+  .bottom-drawer--outer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 98;
+  }
+  .bottom-drawer--drawer{
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 100rpx;
+    padding: 0;
+    background-color: $whitegrey;
+    color: $black;
+    text-align:center;
+    box-shadow:0 -10px 30px 0 rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    z-index:99;
+  }
+  .drawer--item{
+    padding: 10rpx 10rpx;
+    border-bottom: $section-border;
+    border-radius: 0;
+    background-color: $white;
+    font-size: 16px;
+    &:before, &:after{
+      display: none;
+    }
+  }
+  .drawer--item.cancel {
+    margin-top: 8rpx;
+  }
+</style>
+<template>
+  <view class="bottom-drawer--outer" style="visibility: {{isOpen ? 'visible' : 'hidden'}};" @tap="handleTapSheet" id="sheetmask">
+  </view>
+  <view class="bottom-drawer--drawer"
+        style="transform:{{isOpen ? 'translate3d(0, 0, 0)' : 'translate3d(0, 110%, 0)'}};">
+      <repeat for="{{items}}" key="index" item="item" index="index">
+        <button class="drawer--item"
+                @tap="handleItemTap"
+                id="{{item.value}}"
+                open-type="share"
+                wx:if="{{item.isShare}}">{{item.name}}</button>
+        <button class="drawer--item"
+                @tap="handleItemTap"
+                id="{{item.value}}"
+                wx:else>{{item.name}}</button>
+      </repeat>
+      <button class="drawer--item cancel" @tap="hideDrawer">{{cancelText}}</button>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Flash extends wepy.component {
+    props = {
+      items: {
+        type: Object,
+        default: [{name: '1', value: '1'}]
+      }
+    }
+
+    data = {
+      isOpen: false,
+      cancelText: '取消'
+    }
+
+    methods = {
+      showDrawer () {
+        this.isOpen = true
+        this.$apply()
+      },
+      hideDrawer () {
+        this.isOpen = false
+        this.$apply()
+      },
+      handleItemTap ({target}) {
+        this.$emit('itemtap', target.id)
+      },
+      handleTapSheet (e) {
+        const isTarget = e.target.id === 'sheetmask'
+        if (isTarget) {
+          this.isOpen = false
+        }
+      }
+    }
+
+    onLoad () {
+      // if (wepy.T.locale === 'en') {
+      //   this.cancelText = 'cancel'
+      // }
+    }
+  }
+</script>

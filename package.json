@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@minui/wxc-popup": "^1.0.9",
     "promise-polyfill": "^6.0.2",
     "wepy": "^1.7.1",
     "wepy-async-function": "^1.4.4",
@@ -21,6 +22,7 @@
     "babel-plugin-syntax-export-extensions": "^6.13.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "cross-env": "^4.0.0",

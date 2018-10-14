@@ -1,0 +1,9 @@
+.bottom-drawer--outer { position: fixed; bottom: 0; left: 0; right: 0; height: 100vh; z-index: 98; }
+
+.bottom-drawer--drawer { display: block; position: fixed; bottom: 0; left: 0; right: 0; min-height: 100rpx; padding: 0; background-color: #E5E5E5; color: #333333; text-align: center; box-shadow: 0 -10px 30px 0 rgba(0, 0, 0, 0.1); transition: all 0.3s ease; z-index: 99; }
+
+.drawer--item { padding: 10rpx 10rpx; border-bottom: 1px solid rgba(51, 51, 51, 0.1); border-radius: 0; background-color: #fff; font-size: 16px; }
+
+.drawer--item:before, .drawer--item:after { display: none; }
+
+.drawer--item.cancel { margin-top: 8rpx; }

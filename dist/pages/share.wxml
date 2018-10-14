@@ -1,0 +1,65 @@
+
+
+    <view class="containers">
+    	<!--
+	    <view class="img" bindtab="changeimg">
+	   <image src="http://os11g3fl4.bkt.clouddn.com/WechatIMG12.jpeg"> </image>
+	   	</view>
+-->
+   <!--照片上传区域-->
+  
+        <view class="head">每一图画，美于单独
+        </view>
+
+
+      <view class="content">
+          <view class="photo-box column-center">
+                  <image class="photo-box-img" src="http://os11g3fl4.bkt.clouddn.com/365089016132991422.jpeg"/>
+          </view>
+      </view>
+
+      <view class="bottom">
+        <view class="confirm">
+        <button form-type="submit" class="button type_gray" bindtap="showpopup" data-wpyshowpopup-a=""> 查看原图</button>
+
+          <button class="bottom-bar-btn__small" bindtap="showShare">
+      <view class="icon--share"/>
+    </button>
+
+
+          <wxc-popup animation-mode="bottom" align="bottom" class="wxc-popup">
+          <view class="popup__content_full">
+
+              <view class="weui-grids">        
+              <view class="weui-grid"  wx:for="{{price}}" wx:key="name">            
+              <navigator url="{{item.url+'?name='+item.name+'&code='+item.code}}">                
+              <view class="weui-grid__bg"> 
+              <!--                   
+              <view class="weui-grid__icon">                        
+              <image src=" {{item.icon}}" mode="scaleToFill" />                    
+              </view>
+              -->                   
+              <text class="weui-grid__label">{{item.name}}</text>                
+              </view>            
+              </navigator>        
+              </view>    
+              </view>
+          </view>
+        </wxc-popup>
+
+
+       </view>
+      </view>
+
+  		</view>
+ 
+   
+  <view class="bottom-drawer--outer" style="visibility: {{$bottomdrawer$isOpen ? 'visible' : 'hidden'}};" bindtap="$bottomdrawer$handleTapSheet" id="sheetmask">
+  </view>
+  <view class="bottom-drawer--drawer" style="transform:{{$bottomdrawer$isOpen ? 'translate3d(0, 0, 0)' : 'translate3d(0, 110%, 0)'}};">
+      <block wx:for="{{$bottomdrawer$items}}" wx:for-index="$bottomdrawer$index" wx:for-item="$bottomdrawer$item" wx:key="$bottomdrawer$index">
+        <button class="drawer--item" bindtap="$bottomdrawer$handleItemTap" id="{{$bottomdrawer$item.value}}" open-type="share"  wx:if="{{$bottomdrawer$item.isShare}}">{{$bottomdrawer$item.name}}</button>
+        <button class="drawer--item" bindtap="$bottomdrawer$handleItemTap" id="{{$bottomdrawer$item.value}}"  wx:else>{{$bottomdrawer$item.name}}</button>
+      </block>
+      <button class="drawer--item cancel" bindtap="$bottomdrawer$hideDrawer">{{$bottomdrawer$cancelText}}</button>
+  </view>

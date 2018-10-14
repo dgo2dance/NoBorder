@@ -28,13 +28,14 @@ export default class extends wepy.app {
       'pages/list',
       'pages/org_detail',
       'pages/info',
-      'pages/create_confirm'
+      'pages/create_confirm',
+      'pages/share'
 
     ],
     window: {
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#F8F8F8',
-      navigationBarTitleText: '无界',
+      navigationBarTitleText: '每图',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: false,
       backgroundColor: '#F8F8F8'

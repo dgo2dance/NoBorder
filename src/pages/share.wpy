@@ -1,0 +1,559 @@
+
+<template>
+
+    <view class="containers">
+    	<!--
+	    <view class="img" @tab="changeimg">
+	   <image src="http://os11g3fl4.bkt.clouddn.com/WechatIMG12.jpeg"> </image>
+	   	</view>
+-->
+   <!--照片上传区域-->
+  
+        <view class="head">每一图画，美于单独
+        </view>
+
+
+      <view class="content">
+          <view class="photo-box column-center" >
+                  <image class="photo-box-img" src="http://os11g3fl4.bkt.clouddn.com/365089016132991422.jpeg"></image>
+          </view>
+      </view>
+
+      <view class="bottom">
+        <view class="confirm">
+        <button form-type="submit" class="button type_gray" @tap="showpopup()"> 查看原图</button>
+
+          <button class="bottom-bar-btn__small" @tap="showShare">
+      <view class="icon--share"/>
+    </button>
+
+
+          <wxc-popup animation-mode="bottom" align="bottom" class="wxc-popup">
+          <view class="popup__content_full">
+
+              <view class="weui-grids">        
+              <view class="weui-grid" wx:for="{{price}}" wx:key="name">            
+              <navigator url="{{item.url+'?name='+item.name+'&code='+item.code}}">                
+              <view class='weui-grid__bg'> 
+              <!--                   
+              <view class="weui-grid__icon">                        
+              <image src=" {{item.icon}}" mode="scaleToFill" />                    
+              </view>
+              -->                   
+              <text class="weui-grid__label">{{item.name}}</text>                
+              </view>            
+              </navigator>        
+              </view>    
+              </view>
+          </view>
+        </wxc-popup>
+
+
+       </view>
+      </view>
+
+  		</view>
+ 
+   <bottomdrawer :items.sync="shareDrawerItems" @itemtap.user="handleShareItem"/>
+
+</template>
+<script>
+import wepy from 'wepy';
+import api from '../api/api';
+import tip from '../utils/tip'
+import Tips from '../utils/Tips';
+
+import Tab from '../components/tab'
+import Discover from '../components/discover'
+import Bombscreen from '../components/bomb_screen'
+import OrderItem from '../components/order_item'
+import BottomDrawer from '../components/bottom-drawer'
+import BottomLoadMore from "../components/common/bottomLoadMore"
+import Placeholder from "../components/common/placeholder"
+import 'wepy-async-function'
+import ImageUploader from '../components/common/image_uploader'
+import WxUtils from '../utils/WxUtils';
+
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO,
+  USER_INFO,
+  USER_CODE
+} from '../utils/constant';
+
+export default class share extends wepy.page {
+
+	 def = {
+      input: {
+        status: true
+      },
+      shareDrawerItems:[
+          {name: '分享给朋友', value: 'send_friends', isShare: true},
+          {name: '保存图片', value: 'qr_code', isShare: false}],
+      details: [],
+      pic: [{url:'http://os11g3fl4.bkt.clouddn.com/365089016132991422.jpeg'}],
+      skuList: [{
+        sku: '',
+        price: '',
+        stock: ''
+      }],
+      mode: 'create',
+      pic: null,
+      goodsId: null,
+      innerCategories: [],
+      init: false,
+      isInnerDisplay: 'false',
+      price: [{
+          name: '0.01',
+          url: '/pages/Course/course',
+          icon: '/image/java_ico.png',
+          code: '10'
+        },
+        {
+          name: '0.1',
+          url: '/pages/Course/course',
+          icon: '/image/python_ico.png',
+          code: '11'
+        },
+        {
+          name: '1',
+          url: '/pages/Course/course',
+          icon: '/image/java_ico.png',
+          code: '10'
+        },
+        {
+          name: '2',
+          icon: '/image/python_ico.png',
+          code: '11'
+        },
+        {
+          name: '5',
+          url: '/pages/Course/course',
+          icon: '/image/java_ico.png',
+          code: '10'
+        },
+        {
+          name: '7',
+          icon: '/image/python_ico.png',
+          code: '11'
+        }
+      ]
+
+    };
+
+    data = {...this.def};
+
+  config = {
+    navigationBarTitleText: '每图',
+    usingComponents: {
+        'wxc-popup': '../../packages/@minui/wxc-popup/dist/index',
+      }
+
+  };
+  components = {
+    discover: Discover,
+    bottomLoadMore: BottomLoadMore,
+    placeholder: Placeholder,
+    bombscreen: Bombscreen,
+    tab: Tab,
+    orderItem: OrderItem,
+    ImageUploader: ImageUploader,
+    bottomdrawer:BottomDrawer
+  };
+ 
+
+  //
+
+
+
+   // 加载项
+  onLoad(options) {
+
+    console.log("pic:"+this.pic);
+  //  this.pic=options.picture;
+
+  }
+
+ computed = {
+
+  }
+
+
+async goToConfirm(formId) {
+    //测试调用接口用，可注释
+    tip.loading("确认中");
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openId = userSpecialInfo.openid;
+
+    //确认提交
+    const json = await api.confirm({
+      query: {
+        openId: openId,
+        picId: this.pic
+      }
+    });
+
+
+    // if (json.data.code == 0) {
+
+    //   tip.success("确认成功!");
+    //     setTimeout(() => {
+    //       tip.loaded();
+    //       wepy.navigateTo({
+    //         url: "/pages/reorder"
+    //       })
+    //     }, 2000)
+
+    // } else {
+    //   tip.error(json.data.msg)
+    // }
+
+          tip.success("确认成功!");
+        setTimeout(() => {
+          tip.loaded();
+          wepy.navigateTo({
+            url: "/pages/share"
+          })
+        }, 2000)
+
+
+  }
+
+
+
+  methods = {
+
+    //确认提交
+    async goConfirm(){
+      this.goToConfirm();
+    },
+
+    showpopup() {
+        let popupComponent = this.$wxpage.selectComponent('.wxc-popup');
+        console.log("111");
+        popupComponent && popupComponent.show();
+      },
+      onCancel() {
+        let popupComponent = this.$wxpage.selectComponent('.wxc-popup');
+        popupComponent && popupComponent.hide();
+      },
+      showShare () {
+        this.$invoke('bottomdrawer', 'showDrawer', '')
+      },
+
+       handleShareItem (param) {
+        if (param === 'qr_code') {
+         // this.displayQrCode(this.animalInfo.objectId)
+         console.log("9999999");
+        }
+      }
+
+
+  }
+
+   watch = {
+      loading () {
+        if (this.loading) {
+          this.$invoke('fidoloader', 'showLoading', '')
+        } else {
+          this.$invoke('fidoloader', 'hideLoading', '')
+        }
+      },
+    }
+
+
+  events = {
+	}
+
+
+}
+</script>
+<style lang="scss">
+  @import "../styles/variable";
+
+.containers {
+    position: fixed;
+		height: 100%;
+		width: 100%;
+		display: flex;
+    justify-content: flex-start;  
+    flex-direction:column;
+    .head{
+      margin:30rpx 0;
+      width:100%;
+      text-align:center;
+      font-size:35rpx;
+    }
+    /*
+    .bg-blur {
+            float: left;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            -webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+        }
+        */
+
+      .content{
+         height: 320px;
+         width:100%;
+         background-color: #ffffff;
+         text-align:center;
+         display: flex;
+         justify-content: center;  
+
+      }
+
+  .photo-box{
+    height: 320px;
+    width:80%;
+    background-color: #111111;
+    background-size: 420px;
+    text-align:center
+  }
+
+
+  .photo-box-img{
+    height: 320px;
+    width:100%;
+    background-color: 000000;
+    background-size: 420px;
+  }
+
+    .btn{
+      position:absolute;
+        text-align: center;
+        margin-top:300rpx;
+    }
+    .photo-btn{
+      height: 75px;
+      width: 75px;
+      
+
+    }
+
+		background-color:#ffffff;
+		.item{
+				display:flex;
+				height:100%;
+				width:100%;
+				align-items:center;/*垂直居中*/
+
+			}
+
+      .bottom{
+      width:100%;
+      background-color:#ffffff;
+      text-align:center;
+      display:flex;
+      justify-content:center;
+      }
+
+    .confirm{
+      display:flex;
+      justify-content:center;
+      bottom:160rpx;
+      width:80%;
+      align-self:flex-end;
+      position: fixed;
+      }
+    .title{
+      font-size:30rpx;
+
+    }
+
+
+    .button {
+    font-size:36rpx;
+    height:95rpx;
+    line-height:95rpx;
+    text-align:center;
+    margin:0 auto;
+    -moz-border-radius:10rpx;
+    -webkit-border-radius:10rpx;
+    border-radius:10rpx;  
+    }
+
+    .circle {
+    font-size:36rpx;
+    height:95rpx;
+    line-height:95rpx;
+    text-align:center;
+    margin:0 auto;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    border-radius:50%;  
+    }
+
+
+      .popup__content {
+    width: 300rpx;
+    height: 300rpx;
+    line-height: 300rpx;
+    background: #FFFFFF;
+    border-radius: 12rpx;
+    text-align: center;
+  }
+
+  .popup__content_full {
+    width: 100%;
+    text-align: center;
+    background: #FFFFFF;
+  }
+
+
+
+  .popup__content_side {
+    width: 300rpx;
+    height: 100%;
+    line-height: 400rpx;
+    background: #ffffff;
+    text-align: center;
+  }
+
+  .weui-grids {
+  position: relative;
+  overflow: hidden;
+}
+
+.weui-grids:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px solid #d9d9d9;
+  color: #d9d9d9;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+
+.weui-grids:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  bottom: 0;
+  border-left: 1px solid #d9d9d9;
+  color: #d9d9d9;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleX(0.5);
+  transform: scaleX(0.5);
+}
+
+.weui-grid {
+  position: relative;
+  float: left;
+  padding: 20px 10px;
+  width: 33.33333333%;
+  box-sizing: border-box;
+}
+
+.weui-grid:before {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+  bottom: 0;
+  border-right: 1px solid #d9d9d9;
+  color: #d9d9d9;
+  -webkit-transform-origin: 100% 0;
+  transform-origin: 100% 0;
+  -webkit-transform: scaleX(0.5);
+  transform: scaleX(0.5);
+}
+
+.weui-grid:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-bottom: 1px solid #d9d9d9;
+  color: #d9d9d9;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+
+.weui-grid:active {
+  background-color: #ECECEC;
+}
+
+.weui-grid__bg {
+  position: relative;
+  float: left;
+  padding: 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.weui-grid__icon {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto;
+}
+
+.weui-grid__icon image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.weui-grid__icon + .weui-grid__label {
+  margin-top: 5px;
+}
+
+.weui-grid__label {
+  display: block;
+  text-align: center;
+  color: #000;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.bottom-bar-btn__small{
+   border-radius: 10rpx;
+  flex: 1;
+  padding: 0 5rpx;
+  text-align: center;
+  margin: 0 20rpx;
+  &:before, &:after{
+    display: none;
+  }
+}
+.bottom-bar-btn__small {
+  flex:0 0 50px;
+}
+.bottom-bar-btn[disabled], .bottom-bar-btn__small[disabled]{
+  color: #000000;
+}
+
+.icon--share {
+  background-image:url('http://os11g3fl4.bkt.clouddn.com/share_02.png');
+  background-size: 100%;
+  margin: 0!important;
+  opacity: 1;
+}
+
+
+
+
+}
+
+</style>

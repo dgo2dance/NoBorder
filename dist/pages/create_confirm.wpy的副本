@@ -1,0 +1,263 @@
+
+<template>
+
+    <view class="containers">
+    	<!--
+	    <view class="img" @tab="changeimg">
+	   <image src="http://os11g3fl4.bkt.clouddn.com/WechatIMG12.jpeg"> </image>
+	   	</view>
+-->
+   <!--照片上传区域-->
+  
+        <view class="head">无界，穿越就是视界
+        </view>
+
+
+      <view class="content">
+          <view class="photo-box column-center" >
+                  <image class="photo-box-img" src="{{pic}}"></image>
+          </view>
+    
+
+      </view>
+        <view class="confirm">
+
+          <form bindsubmit="goConfirm" >
+        <button form-type="submit" class="button type_gray">确认提交</button>
+      </form>
+
+
+       </view>
+
+  		</view>
+ 
+</template>
+<script>
+import wepy from 'wepy';
+import api from '../api/api';
+import tip from '../utils/tip'
+import Tips from '../utils/Tips';
+
+import Tab from '../components/tab'
+import Discover from '../components/discover'
+import Bombscreen from '../components/bomb_screen'
+import OrderItem from '../components/order_item'
+import BottomLoadMore from "../components/common/bottomLoadMore"
+import Placeholder from "../components/common/placeholder"
+import 'wepy-async-function'
+import ImageUploader from '../components/common/image_uploader'
+import WxUtils from '../utils/WxUtils';
+
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO,
+  USER_INFO,
+  USER_CODE
+} from '../utils/constant';
+
+export default class create_confirm extends wepy.page {
+
+	 def = {
+      input: {
+        status: true
+      },
+      details: [],
+      pictures: [{url:'http://os11g3fl4.bkt.clouddn.com/WechatIMG12.jpeg'}],
+      skuList: [{
+        sku: '',
+        price: '',
+        stock: ''
+      }],
+      mode: 'create',
+      pic: null,
+      goodsId: null,
+      innerCategories: [],
+      init: false,
+      isInnerDisplay: 'false'
+    };
+
+    data = {...this.def};
+
+  config = {
+    navigationBarTitleText: '无界',
+  };
+  components = {
+    discover: Discover,
+    bottomLoadMore: BottomLoadMore,
+    placeholder: Placeholder,
+    bombscreen: Bombscreen,
+    tab: Tab,
+    orderItem: OrderItem,
+    ImageUploader: ImageUploader,
+  };
+ 
+
+  //
+
+
+
+   // 加载项
+  onLoad(options) {
+
+    console.log(options);
+    this.pic=options.picture;
+
+  }
+
+ computed = {
+
+  }
+
+
+async goToConfirm(formId) {
+    //测试调用接口用，可注释
+    tip.loading("确认中");
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openId = userSpecialInfo.openid;
+
+    //确认提交
+    const json = await api.confirm({
+      query: {
+        openId: openId,
+        picId: this.pic
+      }
+    });
+
+
+    // if (json.data.code == 0) {
+
+    //   tip.success("确认成功!");
+    //     setTimeout(() => {
+    //       tip.loaded();
+    //       wepy.navigateTo({
+    //         url: "/pages/reorder"
+    //       })
+    //     }, 2000)
+
+    // } else {
+    //   tip.error(json.data.msg)
+    // }
+
+          tip.success("确认成功!");
+        setTimeout(() => {
+          tip.loaded();
+          wepy.navigateTo({
+            url: "/pages/share"
+          })
+        }, 2000)
+
+
+  }
+
+
+
+  methods = {
+
+    //确认提交
+    async goConfirm(){
+      this.goToConfirm();
+    }
+
+  }
+
+  events = {
+	}
+
+
+}
+</script>
+<style lang="scss">
+  @import "../styles/variable";
+
+.containers {
+    position: fixed;
+		height: 100%;
+		width: 100%;
+		display: flex;
+    justify-content: flex-start;  
+    flex-direction:column;
+    .head{
+      margin:30rpx 0;
+      width:100%;
+      text-align:center;
+      font-size:35rpx;
+    }
+    /*
+    .bg-blur {
+            float: left;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            -webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+        }
+        */
+
+      .content{
+         height: 320px;
+         width:100%;
+         background-color: #ffffff;
+         text-align:center;
+         display: flex;
+         justify-content: center;  
+
+      }
+
+  .photo-box{
+    height: 320px;
+    width:80%;
+    background-color: #111111;
+    background-size: 420px;
+    text-align:center
+  }
+
+
+  .photo-box-img{
+    height: 320px;
+    width:100%;
+    background-color: 000000;
+    background-size: 420px;
+  }
+
+    .btn{
+      position:absolute;
+        text-align: center;
+        margin-top:300rpx;
+    }
+    .photo-btn{
+      height: 75px;
+      width: 75px;
+      
+
+    }
+
+		background-color:#ffffff;
+		.item{
+				display:flex;
+				height:100%;
+				width:100%;
+				align-items:center;/*垂直居中*/
+
+			}
+
+
+
+    .confirm{
+      display:flex;
+      justify-content:center;
+      bottom:160rpx;
+      width:100%;
+      align-self:flex-end;
+      position: fixed;
+      }
+    .title{
+      font-size:30rpx;
+
+    }
+}
+
+</style>

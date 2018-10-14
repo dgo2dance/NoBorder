@@ -9,7 +9,7 @@
 -->
    <!--照片上传区域-->
   
-        <view class="head">无界，穿越就是视界
+        <view class="head">每一图画，美于单独
         </view>
 
 
@@ -75,10 +75,11 @@ export default class create_confirm extends wepy.page {
       init: false,
       isInnerDisplay: 'false'
     };
+
     data = {...this.def};
 
   config = {
-    navigationBarTitleText: '无界',
+    navigationBarTitleText: '每图',
   };
   components = {
     discover: Discover,
@@ -91,68 +92,7 @@ export default class create_confirm extends wepy.page {
   };
  
 
-   async createChannel(pictures,name,intro) {
-        let that = this;
-        let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-        let openId = userSpecialInfo.openid;
-        console.log("openid:--"+openId);
-        console.log("pictures:--"+JSON.stringify(pictures));
-        console.log("name:--"+name);
-        console.log("intro:--"+intro);
-
-
-        const data = {
-          goodsDetails: [],
-          goodsSkuInfo: {},
-          goodsStocks: [],
-          images: []
-        };
-        tip.loading('保存中');
-        // 处理图片信息
-        for (let picture of pictures) {
-          if (picture.url.substring(0, 6) == 'wxfile' || picture.url.substring(0, 11) == 'http://tmp/') {
-          	   const url = `${this.baseUrl}/images`;
-			    // const param = {
-			    //   url,
-			    //   filePath,
-			    //   name: 'image'
-			    // };
-
-            const result = await api.image(picture.url);
-            console.log("return img"+JSON.stringify(result));
-            const image = JSON.parse(result.data);
-            console.log("return image"+JSON.stringify(image));
-
-            picture=image.data;
-            console.log("picture"+picture);
-            that.orgImage=picture
-          } else {
-            that.orgImage=picture
-          }
-        }
-        tip.loading('保存中', true);
-
-
-        const json = await api.createChannel({
-          query: {
-            createUserOpenid: openId,
-            imgPath:that.orgImage,
-            name:name,
-            intro:intro
-          }
-        });
-
-        if (json.data.code == 0) {
-          // that.list = json.data.list;
-          wepy.navigateBack();
-          console.log("绑定成功.....");
-
-          that.$apply();
-        } else {
-          tip.error(json.data.msg)
-        }
-        that.showLoading = false;
-      }
+  //
 
 
 
@@ -168,86 +108,55 @@ export default class create_confirm extends wepy.page {
 
   }
 
+
+async goToConfirm(formId) {
+    //测试调用接口用，可注释
+    tip.loading("确认中");
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openId = userSpecialInfo.openid;
+
+    //确认提交
+    const json = await api.confirm({
+      query: {
+        openId: openId,
+        picId: this.pic
+      }
+    });
+
+
+    // if (json.data.code == 0) {
+
+    //   tip.success("确认成功!");
+    //     setTimeout(() => {
+    //       tip.loaded();
+    //       wepy.navigateTo({
+    //         url: "/pages/reorder"
+    //       })
+    //     }, 2000)
+
+    // } else {
+    //   tip.error(json.data.msg)
+    // }
+
+          tip.success("确认成功!");
+        setTimeout(() => {
+          tip.loaded();
+          wepy.navigateTo({
+            url: "/pages/share"
+          })
+        }, 2000)
+
+
+  }
+
+
+
   methods = {
-      formSubmit(e) {
-      let that = this;
-      let picture=that.pictures;
-      let name = e.detail.value.name;
-      let intro = e.detail.value.intro;
-      if (name == "") {
-        tip.alert("请输入频道名称");
-        return false;
-      }
-      if (intro == "") {
-        tip.alert("请输入频道介绍");
-        return false;
-      }
-      that.createChannel(picture,name,intro);
-      console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    },
 
-
-    // 上传照片
-      async photo() {
-        const size = this.pictures.length;
-        if (size >= 2) {
-          await Tips.alert('最多选择五张图片');
-          return;
-        }
-        const param = {
-          count: 2 - size,
-          sizeType: ['compressed']
-        };
-        const tempFilePaths = await WxUtils.chooseImage(param, this.maxSize);
-        const pictures = tempFilePaths.map(item => {
-          return {
-            temp: true,
-            url: item
-          }
-        });
-     
-
-    //    this.pictures = this.pictures.concat(pictures);
-        this.pictures = pictures;
-        this.$apply();
-
-            const size2 = this.pictures.length;
-                  console.log(size2);
-        if (size2 <1) {
-          await Tips.alert('请选择图片');
-          return;
-        }
-
-        tip.loading('保存中');
-        // 处理图片信息
-        for (let picture of pictures) {
-          if (picture.url.substring(0, 6) == 'wxfile' || picture.url.substring(0, 11) == 'http://tmp/') {
-               const url = `${this.baseUrl}/images`;
-    
-
-            const result = await api.image(picture.url);
-            console.log("return img"+JSON.stringify(result));
-            const image = JSON.parse(result.data);
-            console.log("return image"+JSON.stringify(image));
-            picture=image.data;
-
-            setTimeout(() => {
-              //上传成功 关闭loadding 跳转到确认页面
-              tip.loaded();
-              wepy.navigateTo({
-                url: "/pages/create_confirm?picture="+picture
-              })
-            }, 2000)
-
-            console.log("picture"+picture);
-            that.orgImage=picture
-          } else {
-            that.orgImage=picture
-          }
-        }
-        tip.loading('保存中', true);
-      },
-
+    //确认提交
+    async goConfirm(){
+      this.goToConfirm();
+    }
 
   }
 

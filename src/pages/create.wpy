@@ -9,7 +9,7 @@
 -->
    <!--照片上传区域-->
   
-        <view class="head">无界，穿越就是视界
+        <view class="head">每一图画，美于单独
         </view>
 
 
@@ -75,7 +75,7 @@ export default class createChannelSecond extends wepy.page {
     data = {...this.def};
 
   config = {
-    navigationBarTitleText: '无界',
+    navigationBarTitleText: '每图',
   };
   components = {
     discover: Discover,

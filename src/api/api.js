@@ -28,6 +28,10 @@ const getOrgById = (params) => wxRequest(params,apiMall + "/org/select");
 
 //上传图片
 const image = (params) => wxUpload(params,apiMall+'/user/img/upload'); 
+//确认提交
+const confirm = (params) => wxRequest(params,apiMall+'/user/confirm'); 
+
+
 
 //创建清单
 const createChannel = (params) => wxRequest(params,apiMall + "/org/create");
@@ -204,5 +208,6 @@ module.exports = {
   image,
   createChannel,
   getOrgById,
-  orgPersonList
+  orgPersonList,
+  confirm
 }
