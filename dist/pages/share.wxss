@@ -29,7 +29,7 @@
 
 .containers .title { font-size: 30rpx; }
 
-.containers .button { font-size: 36rpx; height: 95rpx; line-height: 95rpx; text-align: center; margin: 0 auto; -moz-border-radius: 10rpx; -webkit-border-radius: 10rpx; border-radius: 10rpx; }
+.containers .button { font-size: 36rpx; height: 95rpx; line-height: 95rpx; text-align: center; margin: 0 20rpx; -moz-border-radius: 10rpx; -webkit-border-radius: 10rpx; border-radius: 10rpx; }
 
 .containers .circle { font-size: 36rpx; height: 95rpx; line-height: 95rpx; text-align: center; margin: 0 auto; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%; }
 
@@ -72,3 +72,5 @@
 .containers .bottom-bar-btn[disabled], .containers .bottom-bar-btn__small[disabled] { color: #000000; }
 
 .containers .icon--share { background-image: url("http://os11g3fl4.bkt.clouddn.com/share_02.png"); background-size: 100%; margin: 0 !important; opacity: 1; }
+
+.containers .item_img { width: 42rpx; height: 42rpx; }

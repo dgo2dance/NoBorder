@@ -20,23 +20,23 @@
 
         <navigator class="item" url="/pages/order">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_02.png"></image>
-          <view class="text">编辑资料</view>
+          <image class="item_img" src="../images/money.png"></image>
+          <view class="text">我的钱包</view>
         </view>
         <view class="arrow">&gt;</view>
       </navigator>
 
       <navigator class="item" url="/pages/order">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_02.png"></image>
-          <view class="text">活跃频道排行榜</view>
+          <image class="item_img" src="../images/image.png"></image>
+          <view class="text">我发布的图片</view>
         </view>
         <view class="arrow">&gt;</view>
       </navigator>
       <navigator class="item" url="/pages/reorder">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_02.png"></image>
-          <view class="text">帮助与反馈</view>
+          <image class="item_img" src="../images/image.png"></image>
+          <view class="text">我看过的图片</view>
         </view>
         <view class="arrow">&gt;</view>
       </navigator>
@@ -109,7 +109,7 @@ export default class Index extends wepy.page {
 </script>
 <style lang="less">
 .header {
-  background: #dddddd;
+  background: #AEEEEE;
   height: 260rpx;
   width: 100%;
 }

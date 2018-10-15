@@ -21,10 +21,11 @@
 
       <view class="bottom">
         <view class="confirm">
-        <button form-type="submit" class="button type_gray" @tap="showpopup()"> 查看原图</button>
+        <button form-type="submit" class="button type_gray" @tap="showpopup()"> 查看图片</button>
 
-          <button class="bottom-bar-btn__small" @tap="showShare">
-      <view class="icon--share"/>
+          <button class="button type_gray" @tap="showShare">
+      <view class="icon--share">           <image class="item_img" src="../images/share_02.png"></image></view>
+
     </button>
 
 
@@ -373,7 +374,7 @@ async goToConfirm(formId) {
     height:95rpx;
     line-height:95rpx;
     text-align:center;
-    margin:0 auto;
+    margin:0 20rpx;
     -moz-border-radius:10rpx;
     -webkit-border-radius:10rpx;
     border-radius:10rpx;  
@@ -550,6 +551,11 @@ async goToConfirm(formId) {
   margin: 0!important;
   opacity: 1;
 }
+
+.item_img {
+    width: 42rpx;
+    height: 42rpx;
+  }
 
 
 
