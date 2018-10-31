@@ -30,18 +30,17 @@
   <view wx:if="{{showModel}}" class="mask"></view>
   <!-- 自定义弹框结束 -->
 
-    <!--tab模块-->
-  <view class="swiper-tab-pd">
-    <tab @currentTab.user="getCurrentTab" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
-  </view>
-  <scroll-view scroll-y="true" class="swiper-item-box" style="height:{{winHeight - 31}}px" bindscrolltolower="onReachBottom">
-    <orderItem :orderList.sync="orderList"></orderItem>
+        <!--发现好商品模块-->
+    <discover :list.sync="discoverList"></discover>
     <!--加载更多时动画-->
     <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
     <!--暂无数据显示-->
     <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
-  </scroll-view>
-
+    <!--加载更多时动画-->
+    <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+    <!--暂无数据显示-->
+    <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
@@ -63,7 +62,7 @@ import {
 
 export default class Home extends wepy.page {
   config = {
-    navigationBarTitleText: '无界',
+    navigationBarTitleText: '每图',
   }
   components = {
     discover: Discover,
@@ -173,6 +172,31 @@ export default class Home extends wepy.page {
     that.$apply();
   }
 
+  //get List
+  async getDiscoverList(currentPage, size) {
+    let that = this;
+    const json = await api.getHomeDisvocerList({
+      query: {
+        page: currentPage || 1,
+        size: size || 10
+      }
+    });
+    if (json.data.code == 0) {
+      that.discoverList = [...that.discoverList, ...json.data.list];
+
+      if (json.data.page_total) { // 后台的数据不再返回page_total
+      that.page_total = json.data.page_total
+      };
+      if (json.data.page_total == 0) {
+        //暂无数据
+        that.is_empty = true;
+      }
+      that.$apply();
+    } else {
+      tip.error(json.data.msg);
+    }
+    that.showLoading = false;
+  }
 
   async getMyOrderSize() {
     console.log("订单数量统计");
@@ -274,8 +298,8 @@ export default class Home extends wepy.page {
   onLoad() {
     let that = this;
     this.discoverList = [];
-   //  that.getDiscoverList();
-    this.getAdList();
+    that.getDiscoverList();
+    // this.getAdList();
 
    //  登录获取用户信息
     wx.login({

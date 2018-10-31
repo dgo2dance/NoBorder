@@ -30,41 +30,22 @@
   <view  wx:if="{{showModel}}" class="mask"/>
   <!-- 自定义弹框结束 -->
 
-    <!--tab模块-->
-  <view class="swiper-tab-pd">
+        <!--发现好商品模块-->
     
-  <!--index.wxml-->
-  <view class="swiper-tab">
-    <view  wx:for="{{$tab$tabList}}" wx:key="index" class="swiper-tab-list {{$tab$currentTab==index ? 'active' : ''}}" data-current="{{index}}" bindtap="$tab$swichNav">
-      {{item.name? item.name:item}}
-      <view class=" {{item.dotNum>=100?'dotbig':'dot'}}" wx:if="{{item.dotNum>0}}">{{item.dotNum}}</view>
+    <view class="bc">
+        <!--<view class="discover">
+            <view class="discover_title_doc">发现好商品</view>
+        </view>-->
+        <view class="discover_list">
+            <navigator class="item" open-type="navigate"  wx:for="{{$discover$list}}" wx:key="item" url="/pages/home_detail?code={{item.code}}">
+                <image class="discover_img" src="{{item.logo}}"/>
+                <view class="info" wx:for="{{item.attrs}}" wx:key="item">
+                    <view>{{item.attrName.attrName}}：</view><view wx:for="{{item.attrValList}}" wx:key="item">{{item.attrVal}} </view>
+                </view>
+        
+        </navigator>
     </view>
-  </view>
-
-  </view>
-  <scroll-view scroll-y="true" class="swiper-item-box" style="height:{{winHeight - 31}}px" bindscrolltolower="onReachBottom">
-    
-<view class="order_item">
-<block wx:for="{{$orderItem$orderList}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$key">
-  <view class="list"  wx:key="index">
-    <navigator class="flex item" url="/pages/org_detail?code={{$orderItem$item.id}}">
-
-
-            <view class="item_left">
-                <image src="{{$orderItem$item.imgPath}}"/>
-            </view>
-            <view class="flex_auto item_middle">
-                <view><text class="title">{{$orderItem$item.name}}</text></view>
-            </view>
-        <view class="navigator-arrow"/>
-     
-
-  </navigator>
-
-
-  </view>
-</block>
-</view>
+    </view>
 
     <!--加载更多时动画-->
     
@@ -80,4 +61,16 @@
         <view class="txt">{{$placeholder$message}}</view>
     </view>
 
-  </scroll-view>
+    <!--加载更多时动画-->
+    
+    <view class="loadMoreGif"  wx:if="{{$bottomLoadMore$show}}">
+        <image src="../images/loadding.gif"/>
+        <text>{{$bottomLoadMore$message}}</text>
+    </view>
+
+    <!--暂无数据显示-->
+    
+    <view class="empty-placeholder row-center"  wx:if="{{$placeholder$show}}">
+        <image class="icon-xl" src="../images/empty.png"/>
+        <view class="txt">{{$placeholder$message}}</view>
+    </view>

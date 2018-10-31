@@ -45,7 +45,7 @@ const orgPersonList = (params) => wxRequest(params,apiMall+"/org/user/list")
 //商品接口---begin
 //首页发现商品接口
 const hostGoodsList = (params) => wxRequest(params, apiMall + '/api/home/hostGoodsList');
-const getHomeDisvocerList = (params) => wxRequest(params, apiMall + '/api/mall/discoverList');
+const getHomeDisvocerList = (params) => wxRequest(params,  'https://sujiefs.com/' + '/api/mall/discoverList');
 //查询商品列表
 const getGoodsList = (params) => wxRequest(params, apiMall + '/api/mall/searchGoodsList');
 

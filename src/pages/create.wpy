@@ -9,7 +9,7 @@
 -->
    <!--照片上传区域-->
   
-        <view class="head">每一图画，美于单独
+        <view class="head">每一图画，旨在您心底的乍澜
         </view>
 
 
@@ -18,7 +18,7 @@
                   <image class="photo-box-img" src="http://os11g3fl4.bkt.clouddn.com/361549846466828711.jpeg"></image>
           </view>
           <view @tap="photo" class="btn" >
-          <image class="photo-btn" src="/images/icons/camera.png"></image>
+          <image class="photo-btn" src="/images/icons/add-01.png"></image>
           </view>
       </view>
         <view class="problem">
@@ -308,7 +308,7 @@ export default class createChannelSecond extends wepy.page {
     width:100%;
     background-color: 000000;
     background-size: 420px;
-    opacity:0.7; filter: alpha(opacity=60);
+    opacity:0.9; filter: alpha(opacity=60);
   }
 
     .btn{
@@ -317,8 +317,8 @@ export default class createChannelSecond extends wepy.page {
         margin-top:300rpx;
     }
     .photo-btn{
-      height: 75px;
-      width: 75px;
+      height: 65px;
+      width: 65px;
       
 
     }
